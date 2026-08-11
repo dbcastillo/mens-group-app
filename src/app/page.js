@@ -1,23 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoginPage from "../pages/LoginPage";
 import HomePage from "../pages/Homepage";
 
 export default function Home() {
-  const [name, setName] = useState("");
+    const [name, setName] = useState("");
+    const [hasLoaded, setHasLoaded] = useState(false);
 
-  function handleLogin(userName) {
-    setName(userName);
-  }
+    useEffect(() => {
+        const savedName = sessionStorage.getItem("mensGroupUser");
 
-  function handleLogout() {
-    setName("");
-  }
+        if (savedName) {
+            setName(savedName);
+        }
 
-  if (!name) {
-    return <LoginPage onLogin={handleLogin} />;
-  }
+        setHasLoaded(true);
+    }, []);
 
-  return <HomePage name={name} onLogout={handleLogout} />;
+    function handleLogin(userName) {
+        sessionStorage.setItem("mensGroupUser", userName);
+        setName(userName);
+    }
+
+    function handleLogout() {
+        sessionStorage.removeItem("mensGroupUser");
+        setName("");
+    }
+
+    if (!hasLoaded) {
+        return null;
+    }
+
+    if (!name) {
+        return <LoginPage onLogin={handleLogin} />;
+    }
+
+    return <HomePage name={name} onLogout={handleLogout} />;
 }

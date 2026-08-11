@@ -1,8 +1,10 @@
 "use client";
 
 import styles from "./Homepage.module.css";
+import { useRouter } from "next/navigation";
 
 export default function HomePage({ name, onLogout }) {
+    const router = useRouter();
     const rooms = [
         {
             name: "Spirituality",
@@ -84,6 +86,11 @@ export default function HomePage({ name, onLogout }) {
                         <button
                             key={room.name}
                             className={styles.roomCard}
+                            onClick={() => {
+                                if (room.name === "Fitness") {
+                                    router.push("/fitness");
+                                }
+                            }}
                         >
                             <div className={styles.roomIcon}>
                                 {room.icon}
