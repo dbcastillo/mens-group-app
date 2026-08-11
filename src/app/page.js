@@ -1,18 +1,23 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import { useState } from "react";
+import LoginPage from "../pages/LoginPage";
+import HomePage from "../pages/Homepage";
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <div className={styles.intro}>
-          <h1>
-            Men's Group App
-          </h1>
-        </div>
-        <div className={styles.ctas}>
-        </div>
-      </main>
-    </div>
-  );
+  const [name, setName] = useState("");
+
+  function handleLogin(userName) {
+    setName(userName);
+  }
+
+  function handleLogout() {
+    setName("");
+  }
+
+  if (!name) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
+  return <HomePage name={name} onLogout={handleLogout} />;
 }
